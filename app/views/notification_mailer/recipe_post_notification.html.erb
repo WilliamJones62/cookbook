@@ -1,0 +1,3 @@
+<h1>New post in <%= @recipe_post.recipe.title %></h1>
+
+<p><%= link_to "Reply to this comment", recipe_url(@recipe_post.recipe, anchor: dom_id(@recipe_post)) %></p>

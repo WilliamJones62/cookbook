@@ -1,0 +1,4 @@
+<%= div_for recipe_post do %>
+  <p class="text-muted">Posted by <%= recipe_post.user.name %> <%= image_tag user_avatar(recipe_post.user, 30), class: "img-circle" %> <%= local_time_ago recipe_post.created_at %></p>
+  <p><%= markdownify recipe_post.body %></p>
+<% end %>

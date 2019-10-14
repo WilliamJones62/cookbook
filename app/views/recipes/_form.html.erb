@@ -1,0 +1,72 @@
+<%= form_with(model: recipe, local: true) do |form| %>
+  <% if recipe.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+
+      <ul>
+      <% recipe.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @new || @owner || @admin %>
+    <div class="form-group">
+      <% if !@new %>
+        <p> Created by <%= @recipe.user.name %> <%= image_tag user_avatar(@recipe.user, 50), class: "img-circle" %> <%= local_time_ago @recipe.created_at %></p>
+      <% end %>
+      <div><%= form.label :title %> </div>
+      <div><%= form.text_field :title, placeholder: "Recipe name", class: "form-control"  %></div>
+      <div><%= form.label :description %> </div>
+      <div><%= form.text_area :description, size: "70x10", placeholder: "Description", class: "form-control"  %></div>
+      <div><%= form.label :instructions %> </div>
+      <div><%= form.text_area :instructions, size: "70x10", placeholder: "Instructions", class: "form-control"  %></div>
+
+      <h3>Photos</h3>
+      <%= form.fields_for :recipe_images do |image| %>
+        <div>
+          <%= image.text_field :title, class: "form-control" %>
+          <%= image.file_field :image, :value => ' ', class: "form-control" %>
+          <% if image.object.image? %>
+            <%= image_tag image.object.image.thumb.url %>
+          <% end %>
+        </div>
+      <% end %>
+      <h3>Ingredients</h3>
+      <% i = 1 %>
+      <%= form.fields_for :recipe_ingredients do |ingredient| %>
+        <table>
+        <% if i == 1 %>
+          <thead>
+              <tr>
+                  <th> <%= ingredient.label :name, 'Ingredient' %> </th>
+                  <th> <%= ingredient.label :quantity %> </th>
+                  <th> <%= ingredient.label :uom, 'Unit of measure' %> </th>
+              </tr>
+            </thead>
+            <% i = 2 %>
+          <% end %>
+          <tbody>
+              <tr>
+                <td> <%= ingredient.text_field :name, class: "form-control" %> </td>
+                <td> <%= ingredient.number_field :quantity, min: 0, step: 0.01, class: "form-control" %> </td>
+                <td> <%= ingredient.select :uom, @uom, {}, {:value => params[:recipe_ingredients_uom]} %> </td>
+              </tr>
+          </tbody>
+        </table>
+      <% end %>
+      <% if @admin %>
+        <h3>Published?</h3>
+        <div><%= form.check_box :published, id: :recipe_published, class: "form-control" %></div>
+      <% end %>
+      <div>
+        <%= form.submit class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% else %>
+    <div>
+      Recipe unavailable!
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,5 @@
+<%= render 'form', recipe: @recipe %>
+
+<% if @user || @admin %>
+  <%= link_to 'Delete', @recipe, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+<% end %>

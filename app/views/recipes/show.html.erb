@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+<h2 class="text-muted"><%= @recipe.title %></h2>
+<h3 class="text-muted"> Created by <%= @recipe.user.name %> <%= image_tag user_avatar(@recipe.user, 50), class: "img-circle" %> <%= local_time_ago @recipe.created_at %></h3>
+<h3 class="text-muted"> Description </h3>
+<h4 class="text-muted"><%= @recipe.description %></h4>
+<h3 class="text-muted"> Directions </h3>
+<h4 class="text-muted"><%= @recipe.instructions %></h4>
+
+<h3>Photos</h3>
+<% @recipe.recipe_images.each do |c| %>
+  <% if !c.image.url.blank? %>
+  <span id="photo">
+    <span><%= image_tag c.image.normal.url %></span>
+    <span><%= c.title %></span>
+  </span>
+  <% end %>
+<% end %>
+<table id="normal_dt"  class="stripe" class="mytable" class="display" cellspacing="0" >
+  <thead>
+    <tr>
+      <th> Ingredients </th>
+      <th> Quantity </th>
+      <th> Unit of measure </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipe.recipe_ingredients.each do |c| %>
+    <tr>
+      <td> <%= c.name %> </td>
+      <td> <%= c.quantity %> </td>
+      <td> <%= c.uom %> </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Posts</h3>
+<%= render @recipe.recipe_posts %>
+<hr />
+<%= render partial: "recipe_posts/form" %>
+
+<% if @admin %>
+  <%= link_to 'Delete', @recipe, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+<% end %>
