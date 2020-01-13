@@ -7,6 +7,7 @@
       autoWidth: true,
       responsive: true,
       retrieve: true,
+      searching: false,
       dom: 'Bfrtip',
       buttons: [
         {

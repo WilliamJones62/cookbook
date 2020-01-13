@@ -11,17 +11,25 @@
   </div>
 
   <h1 class="page-header">Recipes</h1>
-  <% @recipes.each do |recipe| %>
-    <% if recipe.published %>
+  <table id="normal_dt" class="mytable" class="display" cellspacing="0" >
+    <thead>
       <tr>
-        <td><%= link_to recipe.title, recipe_path(recipe), class: "btn btn-success" %></td>
+        <th>Title</th>
       </tr>
-      <br>
-    <% elsif recipe.user.email == current_user.email || @admin %>
-      <tr>
-        <td><%= link_to recipe.title, edit_recipe_path(recipe), class: "btn btn-success" %></td>
-      </tr>
-      <br>
-    <% end %>
-  <% end %>
+    </thead>
+
+    <tbody>
+      <% @recipes.each do |recipe| %>
+        <% if recipe.published %>
+        <tr>
+          <td><%= link_to recipe.title, recipe_path(recipe), class: "btn btn-success" %></td>
+        </tr>
+        <% elsif recipe.user.email == current_user.email || @admin %>
+        <tr>
+          <td><%= link_to recipe.title, edit_recipe_path(recipe), class: "btn btn-success" %></td>
+        </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
 </div>
